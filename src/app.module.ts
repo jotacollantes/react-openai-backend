@@ -3,11 +3,8 @@ import { ConfigModule } from '@nestjs/config';
 
 import { GptModule } from './gpt/gpt.module';
 
-
 @Module({
-  imports: [
-    ConfigModule.forRoot(),
-    GptModule,
-  ]
+  //Para poder usar las variables de entorno especificamos [ConfigModule.forRoot().
+  imports: [ConfigModule.forRoot(), GptModule],
 })
 export class AppModule {}

@@ -1,5 +1,1 @@
-
-
-
-
-export * from './orthography.use-case'
+export * from './orthography.use-case';
