@@ -6,22 +6,15 @@ import { OrthographyDto, ProsConsDiscusserDto, TranslateDto } from './dtos';
 
 @Controller('gpt')
 export class GptController {
-
   constructor(private readonly gptService: GptService) {}
 
-
   @Post('orthography-check')
-  orthographyCheck(
-    @Body() orthographyDto: OrthographyDto,
-  ) {
+  orthographyCheck(@Body() orthographyDto: OrthographyDto) {
     return this.gptService.orthographyCheck(orthographyDto);
   }
 
-
   @Post('pros-cons-discusser')
-  prosConsDicusser(
-    @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
-  ) {
+  prosConsDicusser(@Body() prosConsDiscusserDto: ProsConsDiscusserDto) {
     return this.gptService.prosConsDicusser(prosConsDiscusserDto);
   }
 
@@ -30,29 +23,23 @@ export class GptController {
     @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
     @Res() res: Response,
   ) {
-     const stream = await this.gptService.prosConsDicusserStream(prosConsDiscusserDto);
+    const stream =
+      await this.gptService.prosConsDicusserStream(prosConsDiscusserDto);
 
-  
     res.setHeader('Content-Type', 'application/json');
-    res.status( HttpStatus.OK );
+    res.status(HttpStatus.OK);
 
-    for await( const chunk of stream ) {
+    for await (const chunk of stream) {
       const piece = chunk.choices[0].delta.content || '';
       // console.log(piece);
       res.write(piece);
     }
 
     res.end();
-
   }
-
 
   @Post('translate')
-  translateText(
-    @Body() translateDto: TranslateDto,
-  ) {
+  translateText(@Body() translateDto: TranslateDto) {
     return this.gptService.translateText(translateDto);
   }
-
-
 }
