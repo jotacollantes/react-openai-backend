@@ -4,13 +4,14 @@ interface Options {
   prompt: string;
 }
 
-
-
-export const prosConsDicusserStreamUseCase = async (openai: OpenAI, { prompt }: Options) => {
-
+export const prosConsDicusserStreamUseCase = async (
+  openai: OpenAI,
+  { prompt }: Options,
+) => {
+  //CUando es stream retorno todo el objeto y ya no return response.choices[0].message;
   return await openai.chat.completions.create({
     stream: true,
-    model: 'gpt-4',
+    model: 'gpt-3.5-turbo',
     messages: [
       {
         role: 'system',
@@ -18,15 +19,16 @@ export const prosConsDicusserStreamUseCase = async (openai: OpenAI, { prompt }: 
           Se te dará una pregunta y tu tarea es dar una respuesta con pros y contras,
           la respuesta debe de ser en formato markdown,
           los pros y contras deben de estar en una lista,
-        `
+        `,
       },
       {
         role: 'user',
-        content: prompt
-      }
+        content: prompt,
+      },
     ],
     temperature: 0.8,
-    max_tokens: 500
-  })
-
-}
+    max_tokens: 500,
+  });
+  //Ya no retorno
+  //return response.choices[0].message;
+};

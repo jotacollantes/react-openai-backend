@@ -6,22 +6,16 @@ import { OrthographyDto, ProsConsDiscusserDto } from './dtos';
 
 @Controller('gpt')
 export class GptController {
-
   constructor(private readonly gptService: GptService) {}
 
-
+  //Nombre del controlador
   @Post('orthography-check')
-  orthographyCheck(
-    @Body() orthographyDto: OrthographyDto,
-  ) {
+  orthographyCheck(@Body() orthographyDto: OrthographyDto) {
     return this.gptService.orthographyCheck(orthographyDto);
   }
-
-
+  //Nombre del controlador
   @Post('pros-cons-discusser')
-  prosConsDicusser(
-    @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
-  ) {
+  prosConsDicusser(@Body() prosConsDiscusserDto: ProsConsDiscusserDto) {
     return this.gptService.prosConsDicusser(prosConsDiscusserDto);
   }
 
@@ -30,21 +24,19 @@ export class GptController {
     @Body() prosConsDiscusserDto: ProsConsDiscusserDto,
     @Res() res: Response,
   ) {
-     const stream = await this.gptService.prosConsDicusserStream(prosConsDiscusserDto);
-
-  
+    const stream =
+      await this.gptService.prosConsDicusserStream(prosConsDiscusserDto);
+    //hay que emitir la respuesta cuando se usa el decorador @res
     res.setHeader('Content-Type', 'application/json');
-    res.status( HttpStatus.OK );
+    res.status(HttpStatus.OK);
 
-    for await( const chunk of stream ) {
+    for await (const chunk of stream) {
+      //Si no tenemos nada enviamos un string vacio
       const piece = chunk.choices[0].delta.content || '';
-      // console.log(piece);
+      console.log(piece);
       res.write(piece);
     }
 
     res.end();
-
   }
-
-
 }
