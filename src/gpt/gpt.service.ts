@@ -55,9 +55,13 @@ export class GptService {
       '../../generated/audios/',
       `${fileId}.mp3`,
     );
-
+    console.log(
+      'files',
+      JSON.stringify({ __dirname, filePath, fileId }, null, 2),
+    );
+    //Verificamos si el archivo existe
     const wasFound = fs.existsSync(filePath);
-
+    //Regresamos un 404
     if (!wasFound) throw new NotFoundException(`File ${fileId} not found`);
 
     return filePath;
