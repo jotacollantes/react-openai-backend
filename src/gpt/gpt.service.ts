@@ -25,7 +25,6 @@ import {
   TranslateDto,
 } from './dtos';
 
-
 @Injectable()
 export class GptService {
   private openai = new OpenAI({
@@ -79,27 +78,23 @@ export class GptService {
     return await audioToTextUseCase(this.openai, { audioFile, prompt });
   }
 
-  async imageGeneration( imageGenerationDto: ImageGenerationDto ) {
-    return await imageGenerationUseCase( this.openai, { ...imageGenerationDto } );
+  async imageGeneration(imageGenerationDto: ImageGenerationDto) {
+    return await imageGenerationUseCase(this.openai, { ...imageGenerationDto });
   }
 
-  getGeneratedImage( fileName: string ) {
-
-    const filePath = path.resolve('./','./generated/images/', fileName);
-    const exists = fs.existsSync( filePath );
-    
-
-    if ( !exists ) {
+  getGeneratedImage(fileName: string) {
+    //Buscamos la imagen en /generated/images
+    const filePath = path.resolve('./', './generated/images/', fileName);
+    const exists = fs.existsSync(filePath);
+    console.log(filePath);
+    if (!exists) {
       throw new NotFoundException('File not found');
     }
 
     return filePath;
   }
 
-
-  async geneateImageVariation( { baseImage }: ImageVariationDto ) {
-    return imageVariationUseCase( this.openai, { baseImage } );
+  async generateImageVariation({ baseImage }: ImageVariationDto) {
+    return imageVariationUseCase(this.openai, { baseImage });
   }
-
 }
- 

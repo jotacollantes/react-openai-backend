@@ -11,20 +11,26 @@ export const downloadImageAsPng = async (
   const response = await fetch(url);
 
   if (!response.ok) {
+    //Error propio de nest
     throw new InternalServerErrorException('Download image was not possible');
   }
 
   const folderPath = path.resolve('./', './generated/images/');
+  //Nos aseguramos y creamos el directorio en caso de que no exista
   fs.mkdirSync(folderPath, { recursive: true });
 
   const imageNamePng = `${new Date().getTime()}.png`;
+  //Como la response viene como un binario porque es una imagen lo guardamos en un buffer
   const buffer = Buffer.from(await response.arrayBuffer());
-
+  //! no grabamos en este punto porque grabamos con sharp
   // fs.writeFileSync( `${ folderPath }/${ imageNamePng }`, buffer );
   const completePath = path.join(folderPath, imageNamePng);
-
+  //! Aqui grabamos
   await sharp(buffer).png().ensureAlpha().toFile(completePath);
-
+  console.log(
+    'data',
+    JSON.stringify({ completePath, folderPath, imageNamePng }, null, 2),
+  );
   return fullPath ? completePath : imageNamePng;
 };
 
