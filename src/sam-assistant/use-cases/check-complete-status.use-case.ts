@@ -23,6 +23,9 @@ export const checkCompleteStatusUseCase = async (
   //! Si no se cumple la condicion de status===completed se vuelve a ejecutar de manera recursiva esta funcion (checkCompleteStatusUseCase)
   // Esperamos un segundo para que openAI no nos bloquee
   await new Promise((resolve) => setTimeout(resolve, 1000));
-
   return await checkCompleteStatusUseCase(openai, options);
+  //! de esta manera no funciona
+  // setTimeout(async () => {
+  //   return await checkCompleteStatusUseCase(openai, options);
+  // }, 1000);
 };
