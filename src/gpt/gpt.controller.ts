@@ -127,16 +127,17 @@ export class GptController {
   }
 
   @Get('image-generation/:filename')
-  async getGenerated(@Res() res: Response, @Param('filename') fileName: string) {
+  async getGenerated(
+    @Res() res: Response,
+    @Param('filename') fileName: string,
+  ) {
     const filePath = this.gptService.getGeneratedImage(fileName);
     res.status(HttpStatus.OK);
     res.sendFile(filePath);
   }
 
-
   @Post('image-variation')
   async imageVariation(@Body() imageVariationDto: ImageVariationDto) {
     return await this.gptService.geneateImageVariation(imageVariationDto);
   }
-
 }
